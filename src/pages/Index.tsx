@@ -1,12 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from "react";
+import PageTransition from "@/components/PageTransition";
+import ProposalPage from "@/components/ProposalPage";
+import MessagePage from "@/components/MessagePage";
+import PoemPage from "@/components/PoemPage";
+import FinalPage from "@/components/FinalPage";
 
 const Index = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const goToNextPage = () => {
+    setCurrentPage(prev => prev + 1);
+  };
+
+  const restartProposal = () => {
+    setCurrentPage(0);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="w-full h-screen relative overflow-hidden">
+      <PageTransition visible={currentPage === 0}>
+        <ProposalPage onYesClick={goToNextPage} />
+      </PageTransition>
+
+      <PageTransition visible={currentPage === 1}>
+        <MessagePage onContinue={goToNextPage} />
+      </PageTransition>
+
+      <PageTransition visible={currentPage === 2}>
+        <PoemPage onContinue={goToNextPage} />
+      </PageTransition>
+
+      <PageTransition visible={currentPage === 3}>
+        <FinalPage onRestart={restartProposal} />
+      </PageTransition>
     </div>
   );
 };
